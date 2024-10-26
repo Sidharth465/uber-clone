@@ -1,17 +1,20 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "baseUrl": ".", // Set baseUrl to the root of your project
     "strict": true,
+    "types": ["nativewind/types"],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@assets/*": ["assets/*"] // Path mapping for the assets folder
+      // Remove the @/* mapping if there is no src folder
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "nativewind-env.d.ts",
+    "types/**/*"
   ]
 }
