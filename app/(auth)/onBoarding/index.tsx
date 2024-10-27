@@ -58,7 +58,7 @@ const OnBoarding = () => {
             ? () => router.replace("/(auth)/sign-up")
             : () => swiperRef.current?.scrollBy(1)
         }
-        className="w-11/12 my-2 h-[50px]  "
+        className="w-11/12 mt-10 mb-5 "
         title={isLastIndex ? "Get Started" : "Next"}
       />
      
