@@ -1,11 +1,13 @@
 import { View, Text, ScrollView, Image } from "react-native";
 import React, { useState, version } from "react";
-import { icons, images } from "constants";
+
 import InputFiled from "components/InputFiled";
 import CustomButton from "components/CustomButton";
 import { Link, useRouter } from "expo-router";
 import OAuth from "components/OAuth";
 import { useSignIn } from "@clerk/clerk-expo";
+import { icons } from "constants";
+import { images } from "constants";
 
 
 const SignIn = () => {
@@ -26,7 +28,7 @@ const SignIn = () => {
 
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId })
-        router.replace("/index")
+        router.replace("/")
       } else {
         // See https://clerk.com/docs/custom-flows/error-handling
         // for more info on error handling
