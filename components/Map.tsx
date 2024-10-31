@@ -10,6 +10,10 @@ import {
 import { icons } from "constants/index";
 import { Driver, MarkerData } from "types/type";
 import { useFetch } from "constants/lib/fetch";
+import MapViewDirections from "react-native-maps-directions";
+
+const directionApiKey = process.env.EXPO_PUBLIC_Google_API_KEY!;
+console.log("api key direction", directionApiKey);
 
 const Map = () => {
   const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
@@ -61,8 +65,8 @@ const Map = () => {
 
   if (loading || (!userLatitude && !userLongitude))
     return (
-      <View className="flex justify-between items-center w-full">
-        <ActivityIndicator size="small" color="#000" />
+      <View className="flex justify-center items-center w-full ">
+        <ActivityIndicator size="large" color="#000" />
       </View>
     );
 
@@ -86,17 +90,33 @@ const Map = () => {
       userInterfaceStyle="light"
     >
       {markers?.map((marker) => (
-        <Marker
-          key={marker.id}
-          coordinate={{
-            latitude: marker.latitude,
-            longitude: marker.longitude,
-          }}
-          title={marker.title}
-          image={
-            selectedDriver === marker.id ? icons.selectedMarker : icons.marker
-          }
-        />
+        <>
+          <Marker
+            key={marker.id}
+            coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude,
+            }}
+            title={marker.title}
+            image={
+              selectedDriver === marker.id ? icons.selectedMarker : icons.marker
+            }
+          />
+
+          <MapViewDirections
+            origin={{
+              latitude: userLatitude!,
+              longitude: userLongitude!,
+            }}
+            destination={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            apikey={directionApiKey!}
+            strokeColor="#0286FF"
+            strokeWidth={3}
+          />
+        </>
       ))}
     </MapView>
   );

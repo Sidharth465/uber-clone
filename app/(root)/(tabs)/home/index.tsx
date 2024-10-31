@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images, recentRides } from "constants/index";
@@ -16,16 +16,25 @@ import RideCard from "components/RideCard";
 import GoogleTextInput from "components/GoogleTextInput";
 import Map from "components/Map";
 import { useLocationStore } from "store";
+import { useFetch } from "constants/lib/fetch";
+import { Ride } from "types/type";
 
 const Home = () => {
   const { setUserLocation, setDestinationLocation } = useLocationStore();
   const [hasPermission, setHasPermission] = useState(false);
   const { user } = useUser();
-  const [loading, setLoading] = useState(false);
+
+  const { signOut } = useAuth();
+
+  const {
+    data: recentRides,
+    loading,
+    error,
+  } = useFetch<Ride[]>(`/(api)/ride/${user?.id}`);
 
   const handleSignOut = () => {
-    try {
-    } catch (error) {}
+    signOut();
+    router.replace("/(auth)/sign-in");
   };
   const handleDestinationPress = (location: {
     latitude: number;
@@ -112,7 +121,7 @@ const Home = () => {
                 Your Current Location
               </Text>
             </>
-            <View className="flex flex-row items-center bg-transparent h-[300px]">
+            <View className="flex flex-row items-center bg-transparent h-[300px] rounded-2xl ">
               <Map />
             </View>
             <>
